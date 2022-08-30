@@ -2,7 +2,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 
-public class PhotonLogin : MonoBehaviour
+public class PhotonLogin : MonoBehaviourPunCallbacks
 {
     public TMP_InputField inputUsername;
 
@@ -18,5 +18,16 @@ public class PhotonLogin : MonoBehaviour
 
         PhotonNetwork.LocalPlayer.NickName = name;
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("OnConnectedToMaster");
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("OnJoinedLobby");
     }
 }
