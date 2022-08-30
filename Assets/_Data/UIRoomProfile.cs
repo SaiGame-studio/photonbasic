@@ -14,4 +14,10 @@ public class UIRoomProfile : MonoBehaviour
         this.roomProfile = roomProfile;
         this.roomName.text = this.roomProfile.name;
     }
+
+    public virtual void OnClick()
+    {
+        Debug.Log("OnClick: " + this.roomProfile.name);
+        PhotonRoom.instance.input.text = this.roomProfile.name;
+    }
 }
