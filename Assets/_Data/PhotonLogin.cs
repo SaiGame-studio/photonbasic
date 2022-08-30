@@ -20,13 +20,14 @@ public class PhotonLogin : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    public override void OnJoinedLobby()
-    {
-        Debug.Log("OnJoinedLobby");
-    }
-
     public override void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster");
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("OnJoinedLobby");
     }
 }
