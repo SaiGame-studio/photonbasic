@@ -6,11 +6,18 @@ using UnityEngine;
 
 public class PhotonRoom : MonoBehaviourPunCallbacks
 {
+    public static PhotonRoom instance;
+
     public TMP_InputField input;
     public Transform roomContent;
     public UIRoomProfile roomPrefab;
     public List<RoomInfo> updatedRooms;
     public List<RoomProfile> rooms = new List<RoomProfile>();
+
+    private void Awake()
+    {
+        PhotonRoom.instance = this;//Dont do this in your game
+    }
 
     private void Start()
     {
@@ -29,6 +36,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
         string name = input.text;
         Debug.Log(transform.name + ": Join Room " + name);
         PhotonNetwork.JoinRoom(name);
+        this.ClearRoomProfileUI();
+    }
+
+    public virtual void Leave()
+    {
+        Debug.Log(transform.name + ": Leave Room");
+        PhotonNetwork.LeaveRoom();
     }
 
     public override void OnCreatedRoom()
@@ -67,7 +81,12 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
 
     protected virtual void RoomAdd(RoomInfo roomInfo)
     {
-        RoomProfile roomProfile = new RoomProfile
+        RoomProfile roomProfile;
+
+        roomProfile = this.RoomByName(roomInfo.Name);
+        if (roomProfile != null) return;
+
+        roomProfile = new RoomProfile
         {
             name = roomInfo.Name
         };
@@ -77,16 +96,21 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
 
     protected virtual void UpdateRoomProfileUI()
     {
-        foreach(Transform child in this.roomContent)
-        {
-            Destroy(child.gameObject);
-        }
+        this.ClearRoomProfileUI();
 
         foreach (RoomProfile roomProfile in this.rooms)
         {
             UIRoomProfile uiRoomProfile = Instantiate(this.roomPrefab);
             uiRoomProfile.SetRoomProfile(roomProfile);
             uiRoomProfile.transform.SetParent(this.roomContent);
+        }
+    }
+
+    protected virtual void ClearRoomProfileUI()
+    {
+        foreach (Transform child in this.roomContent)
+        {
+            Destroy(child.gameObject);
         }
     }
 
@@ -104,5 +128,10 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
             if (roomProfile.name == name) return roomProfile;
         }
         return null;
+    }
+
+    public virtual void OnScrollChanged()
+    {
+        Debug.Log("OnScrollChanged");
     }
 }
