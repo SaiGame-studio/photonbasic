@@ -11,6 +11,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
     public TMP_InputField input;
     public Transform roomContent;
     public UIRoomProfile roomPrefab;
+    public bool autoStartGame = false;
     public List<RoomInfo> updatedRooms;
     public List<RoomProfile> rooms = new List<RoomProfile>();
 
@@ -45,39 +46,43 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    public virtual void ClickStartGame()
+    {
+        Debug.Log(transform.name + ": Click Start Game");
+        if (PhotonNetwork.IsMasterClient) this.StartGame();
+        else Debug.LogWarning("You are not Master Client");
+    }
+
     public virtual void StartGame()
     {
         Debug.Log(transform.name + ": Start Game");
-        //if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel("2_PhotonGame");
-        //else Debug.LogWarning("You are not Master Client");
-
         PhotonNetwork.LoadLevel("2_PhotonGame");
     }
 
     public override void OnCreatedRoom()
     {
-        Debug.Log("OnCreatedRoom");
+        Debug.Log(transform.name + ": OnCreatedRoom");
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("OnJoinedRoom");
-        this.StartGame();
+        Debug.Log(transform.name + ": OnJoinedRoom");
+        if(this.autoStartGame) this.StartGame();
     }
 
     public override void OnLeftRoom()
     {
-        Debug.Log("OnLeftRoom");
+        Debug.Log(transform.name + ": OnLeftRoom");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log("OnCreateRoomFailed: " + message);
+        Debug.Log(transform.name + ": OnCreateRoomFailed: " + message);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("OnRoomListUpdate");
+        Debug.Log(transform.name + ": OnRoomListUpdate");
         this.updatedRooms = roomList;
 
         foreach (RoomInfo roomInfo in roomList)
@@ -101,7 +106,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
             name = roomInfo.Name
         };
         this.rooms.Add(roomProfile);
-
     }
 
     protected virtual void UpdateRoomProfileUI()
