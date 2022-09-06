@@ -16,6 +16,7 @@ public class PhotonLogin : MonoBehaviourPunCallbacks
         string name = inputUsername.text;
         Debug.Log(transform.name + ": Login " + name);
 
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.LocalPlayer.NickName = name;
         PhotonNetwork.ConnectUsingSettings();
     }

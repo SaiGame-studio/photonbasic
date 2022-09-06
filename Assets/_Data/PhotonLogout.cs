@@ -9,5 +9,6 @@ public class PhotonLogout : MonoBehaviour
     {
         Debug.Log(transform.name + ": Logout ");
         PhotonNetwork.Disconnect();
+
     }
 }

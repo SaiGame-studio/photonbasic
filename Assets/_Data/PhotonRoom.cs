@@ -14,12 +14,12 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
     public List<RoomInfo> updatedRooms;
     public List<RoomProfile> rooms = new List<RoomProfile>();
 
-    private void Awake()
+    protected void Awake()
     {
         PhotonRoom.instance = this;//Dont do this in your game
     }
 
-    private void Start()
+    protected void Start()
     {
         this.input.text = "Room1";
     }
@@ -45,6 +45,15 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    public virtual void StartGame()
+    {
+        Debug.Log(transform.name + ": Start Game");
+        //if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel("2_PhotonGame");
+        //else Debug.LogWarning("You are not Master Client");
+
+        PhotonNetwork.LoadLevel("2_PhotonGame");
+    }
+
     public override void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom");
@@ -53,6 +62,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom");
+        this.StartGame();
     }
 
     public override void OnLeftRoom()
@@ -128,10 +138,5 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
             if (roomProfile.name == name) return roomProfile;
         }
         return null;
-    }
-
-    public virtual void OnScrollChanged()
-    {
-        Debug.Log("OnScrollChanged");
     }
 }
