@@ -22,12 +22,6 @@ public class PhotonRoomAuto : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log(transform.name + ": OnConnectedToMaster");
-        PhotonNetwork.JoinLobby();
-    }
-
-    public override void OnJoinedLobby()
-    {
-        Debug.Log("OnJoinedLobby");
         PhotonNetwork.CreateRoom(this.roomName);
     }
 }

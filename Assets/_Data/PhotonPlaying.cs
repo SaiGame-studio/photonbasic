@@ -20,16 +20,16 @@ public class PhotonPlaying : MonoBehaviourPunCallbacks
 
     protected virtual void SpawnPlayer()
     {
-        if (PhotonNetwork.NetworkClientState == ClientState.Joined)
+        Debug.Log("SpawnPlayer");
+        if (PhotonNetwork.NetworkClientState != ClientState.Joined)
         {
-            this.LoadPlayerPrefab();
+            Invoke("SpawnPlayer", 1f);
             return;
         }
 
-        GameObject playerObj = Resources.Load(this.photonPlayerName) as GameObject;
-        Instantiate(playerObj);
+        PhotonNetwork.Instantiate(this.photonPlayerName, Vector3.zero, Quaternion.identity);
     }
-        
+
 
     protected virtual void LoadRoomPlayers()
     {
@@ -51,12 +51,6 @@ public class PhotonPlaying : MonoBehaviourPunCallbacks
             this.players.Add(playerProfile);
         }
     }
-
-    protected virtual void LoadPlayerPrefab()
-    {
-        PhotonNetwork.Instantiate(this.photonPlayerName,Vector3.zero,Quaternion.identity);
-    }
-
 
     public virtual void Leave()
     {
