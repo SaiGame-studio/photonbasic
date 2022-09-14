@@ -33,12 +33,17 @@ public class PhotonPlaying : MonoBehaviourPunCallbacks
 
     protected virtual void LoadRoomPlayers()
     {
-        if (PhotonNetwork.NetworkClientState != ClientState.Joined) return;
+        Debug.Log("LoadRoomPlayers");
+        if (PhotonNetwork.NetworkClientState != ClientState.Joined)
+        {
+            Invoke("LoadRoomPlayers", 1f);
+            return;
+        }
 
         PlayerProfile playerProfile;
         foreach (KeyValuePair<int, Player> playerData in PhotonNetwork.CurrentRoom.Players)
         {
-            Debug.Log(playerData.Value.NickName);
+            //Debug.Log(playerData.Value.NickName);
             playerProfile = new PlayerProfile
             {
                 nickName = playerData.Value.NickName

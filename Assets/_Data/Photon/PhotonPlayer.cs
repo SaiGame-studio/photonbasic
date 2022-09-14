@@ -13,8 +13,6 @@ public class PhotonPlayer : MonoBehaviour
 
     public Vector3 mouseInput;
     public Vector3 mousePos;
-    public Vector2 xPosLimit = new Vector2(-10, 10);
-    public Vector2 yPosLimit = new Vector2(-5, 6);
 
     // Update is called once per frame
     protected void FixedUpdate()
@@ -49,14 +47,16 @@ public class PhotonPlayer : MonoBehaviour
 
     protected virtual void FollowMousePos()
     {
+        Vector3 xPosLimit = GameManager.instance.xPosLimit;
+        Vector3 yPosLimit = GameManager.instance.yPosLimit;
         Vector3 newPos = this.mousePos;
         newPos.z = 0;
 
-        if (newPos.x > this.xPosLimit.y) newPos.x = this.xPosLimit.y;
-        if (newPos.x < this.xPosLimit.x) newPos.x = this.xPosLimit.x;
+        if (newPos.x > xPosLimit.y) newPos.x = xPosLimit.y;
+        if (newPos.x < xPosLimit.x) newPos.x = xPosLimit.x;
 
-        if (newPos.y > this.yPosLimit.y) newPos.y = this.yPosLimit.y;
-        if (newPos.y < this.yPosLimit.x) newPos.y = this.yPosLimit.x;
+        if (newPos.y > yPosLimit.y) newPos.y = yPosLimit.y;
+        if (newPos.y < yPosLimit.x) newPos.y = yPosLimit.x;
 
         transform.position = newPos;
     }
