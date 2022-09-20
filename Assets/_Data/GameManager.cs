@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public int numberPerLine = 15;
     public string numberPrefab = "PhotonNumber";
     public List<int> numbers = new List<int>();
+    public List<PhotonNumber> photonNumbers = new List<PhotonNumber>();
 
     protected void Awake()
     {
@@ -34,6 +35,26 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (PhotonNetwork.IsMasterClient) this.MasterSpawnNumbers();
+        else this.ClientReceivedNumbers();
+    }
+
+    protected virtual void ClientReceivedNumbers()
+    {
+        Debug.Log("ClientReceivedNumbers");
+        PhotonNumber[] photonNumbers = GameObject.FindObjectsOfType<PhotonNumber>();
+        foreach (PhotonNumber photonNumber in photonNumbers)
+        {
+            this.photonNumbers.Add(photonNumber);
+        }
+
+        if (this.photonNumbers.Count == 0) Invoke("ClientReceivedNumbers", 1f);
+    }
+
+    protected virtual void MasterSpawnNumbers()
+    {
+        Debug.Log("MasterSpawnNumbers");
+
         for (int i = 0; i < this.maxNumber; i++)
         {
             int lineNumber = Mathf.RoundToInt(i / this.numberPerLine);
@@ -45,7 +66,6 @@ public class GameManager : MonoBehaviour
 
     protected virtual void SpawnNumber(int number, int lineNumber, int colNumber)
     {
-        if (!PhotonNetwork.IsMasterClient) return;
 
         GameObject numberObj;
         //if (PhotonNetwork.NetworkClientState == ClientState.Joined) numberObj = this.SpawnNetwork(number);
@@ -54,12 +74,14 @@ public class GameManager : MonoBehaviour
         numberObj = this.SpawnNetwork(number);
 
         Vector3 pos = this.StartPoint();
-        pos.x += colNumber*3.5f;
-        pos.y -= lineNumber*4f;
+        pos.x += colNumber * 3.5f;
+        pos.y -= lineNumber * 4f;
 
         numberObj.transform.position = pos;
         PhotonNumber photonNumber = numberObj.GetComponent<PhotonNumber>();
         photonNumber.Set(this.GetNumber());
+
+        this.photonNumbers.Add(photonNumber);
     }
 
     protected virtual void RandomNumber()
@@ -92,5 +114,27 @@ public class GameManager : MonoBehaviour
     protected virtual Vector3 StartPoint()
     {
         return new Vector3(this.xPosLimit.x, this.yPosLimit.y, 0);
+    }
+
+    public virtual void NumberOnClaimed(int number)
+    {
+        PhotonNumber photonNumber = this.FindPhotonNumber(number);
+        if (!photonNumber)
+        {
+            Debug.LogWarning("Cant find number: " + number.ToString());
+            return;
+        }
+
+        photonNumber.Claimed();
+    }
+
+    public virtual PhotonNumber FindPhotonNumber(int number)
+    {
+        foreach (PhotonNumber photonNumber in this.photonNumbers)
+        {
+            if (photonNumber.number == number) return photonNumber;
+        }
+
+        return null;
     }
 }

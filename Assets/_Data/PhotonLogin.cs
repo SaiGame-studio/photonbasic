@@ -23,8 +23,8 @@ public class PhotonLogin : MonoBehaviourPunCallbacks
         string name = this.nickName;
         Debug.Log(transform.name + ": Login " + name);
 
-        PhotonNetwork.SendRate = 20;
-        PhotonNetwork.SerializationRate = 5;
+        //PhotonNetwork.SendRate = 20;
+        //PhotonNetwork.SerializationRate = 5;
 
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.LocalPlayer.NickName = name;
