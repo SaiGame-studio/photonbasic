@@ -29,6 +29,5 @@ public class PhotonEventManager : MonoBehaviour
         int number = (int) datas[0];
         Debug.Log("OnNumberClaimed: " + number);
         GameManager.instance.NumberOnClaimed(number);
-
     }
 }
