@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public int maxNumber = 100;
     public int numberPerLine = 15;
     public string numberPrefab = "PhotonNumber";
+    public string numberLimitPrefab = "PhotonNumberLimit";
     public List<int> numbers = new List<int>();
     public List<PhotonNumber> photonNumbers = new List<PhotonNumber>();
 
@@ -62,16 +63,21 @@ public class GameManager : MonoBehaviour
 
             this.SpawnNumber(i, lineNumber, colNumber);
         }
+
+        this.SpawnNumberLimit();
+    }
+
+    protected virtual void SpawnNumberLimit()
+    {
+        GameObject numberObj = PhotonNetwork.Instantiate(this.numberLimitPrefab, Vector3.zero, Quaternion.identity);
+        numberObj.transform.position = this.EndPoint();
     }
 
     protected virtual void SpawnNumber(int number, int lineNumber, int colNumber)
     {
 
         GameObject numberObj;
-        //if (PhotonNetwork.NetworkClientState == ClientState.Joined) numberObj = this.SpawnNetwork(number);
-        //else numberObj = this.SpawnLocal(number);
-
-        numberObj = this.SpawnNetwork(number);
+        numberObj = this.SpawnNumberNetwork(number);
 
         Vector3 pos = this.StartPoint();
         pos.x += colNumber * 3.5f;
@@ -106,7 +112,7 @@ public class GameManager : MonoBehaviour
         return Instantiate(numberLocal);
     }
 
-    protected virtual GameObject SpawnNetwork(int i)
+    protected virtual GameObject SpawnNumberNetwork(int i)
     {
         return PhotonNetwork.Instantiate(this.numberPrefab, Vector3.zero, Quaternion.identity);
     }
@@ -114,6 +120,11 @@ public class GameManager : MonoBehaviour
     protected virtual Vector3 StartPoint()
     {
         return new Vector3(this.xPosLimit.x, this.yPosLimit.y, 0);
+    }
+
+    protected virtual Vector3 EndPoint()
+    {
+        return new Vector3(this.xPosLimit.y, this.yPosLimit.x, 0);
     }
 
     public virtual void NumberOnClaimed(int number)
@@ -126,6 +137,8 @@ public class GameManager : MonoBehaviour
         }
 
         photonNumber.Claimed();
+
+        if (PhotonNetwork.IsMasterClient) PhotonNumberLimit.instance.Set(photonNumber.number + 1);
     }
 
     public virtual PhotonNumber FindPhotonNumber(int number)
