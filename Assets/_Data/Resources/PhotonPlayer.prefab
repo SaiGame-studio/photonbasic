@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00031494, y: -2.99}
+  m_AnchoredPosition: {x: 5.05, y: 0.33}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2062804507
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 7.7672143, y: 0, z: 7.8468785, w: 3.737822}
+  m_margin: {x: 5.665347, y: 2.1231778, z: 9.643735, w: 2.0946224}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -281,9 +281,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67cb46875b3f4a4ea3dacf9c9fcebe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonView: {fileID: 604656794653200117}
+  _photonView: {fileID: 604656794653200117}
   nickNameLable: {fileID: 2062804506}
   photonNickName: Local
+  numberCount: 0
   mouseInput: {x: 0, y: 0, z: 0}
   mousePos: {x: 0, y: 0, z: 0}
 --- !u!114 &604656794653200117
@@ -305,6 +306,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 604656794653200115}
   - {fileID: 604656794653200114}
   sceneViewId: 0
   InstantiationId: 0

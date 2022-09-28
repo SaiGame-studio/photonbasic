@@ -4,8 +4,8 @@ using Photon.Realtime;
 
 public class PhotonRoomAuto : MonoBehaviourPunCallbacks
 {
-    public string nickName = "AutoName";
-    public string roomName = "AutoRoom";
+    public string nickName = "Nick";
+    public string roomName = "Room";
 
     void Awake()
     {
@@ -22,6 +22,16 @@ public class PhotonRoomAuto : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log(transform.name + ": OnConnectedToMaster");
-        PhotonNetwork.CreateRoom(this.roomName);
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log(transform.name + ": OnJoinedLobby");
+        RoomOptions roomOptions = new RoomOptions
+        {
+            MaxPlayers = 7
+        };
+        PhotonNetwork.CreateRoom(this.roomName, roomOptions);
     }
 }

@@ -11,7 +11,6 @@ public class PhotonNumber : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        Debug.Log("OnPhotonSerializeView");
         if (stream.IsWriting) this.StreamWriting(stream);
         else this.StreamReading(stream, info);
     }
@@ -44,8 +43,9 @@ public class PhotonNumber : MonoBehaviourPun, IPunObservable
         object[] datas = new object[] { this.number };
 
         // You would have to set the Receivers to All in order to receive this event on the local client as well
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; 
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
 
+        PhotonPlayer.me.numberCount++;
         PhotonNetwork.RaiseEvent(
             ((byte)EventCode.onNumberClaimed), 
             datas,
