@@ -4,7 +4,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
-public class PhotonPlayer : MonoBehaviourPun, IPunObservable
+public class PhotonPlayerScore : MonoBehaviourPun, IPunObservable
 {
     public static PhotonPlayer me;
     public PhotonView _photonView;
@@ -41,6 +41,7 @@ public class PhotonPlayer : MonoBehaviourPun, IPunObservable
 
     protected virtual void OwnerController()
     {
+
         if (this._photonView.ViewID != 0 && !this._photonView.IsMine) return;
 
         this.LoadMousePos();
@@ -49,7 +50,7 @@ public class PhotonPlayer : MonoBehaviourPun, IPunObservable
 
     protected virtual void LoadOwnerNickName()
     {
-        this.nickNameLable.text = this.photonNickName + ": " + this.numberCount;
+        this.nickNameLable.text = this.photonNickName+": "+this.numberCount;
         if (this._photonView.ViewID == 0) return;
         this.photonNickName = this._photonView.Owner.NickName;
     }

@@ -29,7 +29,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks
     {
         string name = input.text;
         Debug.Log(transform.name + ": Create Room " + name);
-        PhotonNetwork.CreateRoom(name);
+
+        Debug.Log(transform.name + ": OnJoinedLobby");
+        RoomOptions roomOptions = new RoomOptions
+        {
+            MaxPlayers = 7
+        };
+        PhotonNetwork.CreateRoom(name, roomOptions);
     }
 
     public virtual void Join()

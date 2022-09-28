@@ -330,8 +330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e695ed60d84d24d91fc1ebe1514dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nickName: AutoName
-  roomName: AutoRoom
+  nickName: Nick
+  roomName: Room
 --- !u!4 &395453771
 Transform:
   m_ObjectHideFlags: 0

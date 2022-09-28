@@ -20,14 +20,19 @@ public class PhotonPlaying : MonoBehaviourPunCallbacks
 
     protected virtual void SpawnPlayer()
     {
-        Debug.Log("SpawnPlayer");
         if (PhotonNetwork.NetworkClientState != ClientState.Joined)
         {
             Invoke("SpawnPlayer", 1f);
             return;
         }
 
-        PhotonNetwork.Instantiate(this.photonPlayerName, Vector3.zero, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(this.photonPlayerName, Vector3.zero, Quaternion.identity);
+        PhotonView photonView = playerObj.GetComponent<PhotonView>();
+        if (photonView.IsMine)
+        {
+            PhotonPlayer photonPlayer = playerObj.GetComponent<PhotonPlayer>();
+            PhotonPlayer.me = photonPlayer;
+        }
     }
 
 
